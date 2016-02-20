@@ -1,0 +1,206 @@
+\documentclass[12pt, a4paper]{article}
+%\usepackage[swedish]{babel}
+%\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{fancyheadings}
+\newcommand{\HRule}{\rule{\linewidth}{0.6mm}}
+
+\addtolength{\textheight}{20mm}
+\addtolength{\voffset}{-5mm}
+\renewcommand{\sectionmark}[1]{\markleft{#1}}
+
+
+% appendices, \appitem och \appsubitem är för bilagor
+\newcounter{appendixpage}
+
+\newenvironment{appendices}{
+	\setcounter{appendixpage}{\arabic{page}}
+	\stepcounter{appendixpage}
+}{
+}
+
+\newcommand{\appitem}[2]{
+	\stepcounter{section}
+	\addtocontents{toc}{\protect\contentsline{section}{\numberline{\Alph{section}}#1}{\arabic{appendixpage}}}
+	\addtocounter{appendixpage}{#2}
+}
+
+\newcommand{\appsubitem}[2]{
+	\stepcounter{subsection}
+	\addtocontents{toc}{\protect\contentsline{subsection}{\numberline{\Alph{section}.\arabic{subsection}}#1}{\arabic{appendixpage}}}
+	\addtocounter{appendixpage}{#2}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%% Change These %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\names}{Elli \textsc{Virtanen}\\
+					David \textsc{Pikas}\\
+					Wietze \textsc{Schelhaas}}
+\newcommand{\teacher}{Carlos \textsc{Penichet}\\
+					  Dave \textsc{Clarke}\\
+					  Tjark \textsc{Weber}}
+\newcommand{\rapportnamn}{Projekt ASCIIlles}
+%\newcommand{\undertitel}{Och en eventuell cool undertitel}
+\newcommand{\kursnamn}{Program Design and Data Structures 20c}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{center}
+
+	\includegraphics{uu_logo.png} \\[1.5cm]
+	\Large{\kursnamn}\\ 
+	\HRule \\[0.5cm]
+	\textsc{\huge{\rapportnamn}}\\
+	%\Large{\undertitel} \\
+	\HRule \\[0.5cm]
+	\vspace{15 mm}
+
+
+\begin{minipage}{0.4\textwidth}
+	\begin{flushleft} \large
+		\emph{Authors:}\\
+		\names\\
+	\end{flushleft}
+\end{minipage}
+\hfill
+\begin{minipage}{0.4\textwidth}
+	\begin{flushright} \large
+		\emph{Supervisors:}\\
+		\teacher\\
+	\end{flushright}
+\end{minipage}
+
+\vfill
+\large Bachelor Programme in Computer Science
+
+\textsc{\large Uppsala Universitet \\ \today}
+
+\end{center}
+\end{titlepage}
+
+%%%% stycket är snott från Umeå Universitets rapportmall
+% fixar sidfot
+\lfoot{\footnotesize{\names}}
+\rfoot{\footnotesize{\today}}
+\lhead{\sc\footnotesize\rapportnamn}
+\rhead{\nouppercase{\sc\footnotesize\leftmark}}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.2pt}
+\renewcommand{\footrulewidth}{0.2pt}
+% skapar innehållsförteckning.
+% Tänk på att köra latex 2ggr för att uppdatera allt
+\pagenumbering{roman}
+
+
+\tableofcontents
+	
+% och lägger in en sidbrytning
+\newpage
+
+\pagenumbering{arabic}
+
+\section{Problemspecifikation}
+		% \emph innebär emphasize, d.v.s. betona eller framhåll -> kursiv stil
+		\emph{I detta avsnitt beskrivs laborationen, dels som en sammanfattning
+			över dess syfte, men även en koppling till orginalspecifikationen
+			tas upp.}
+
+		% lägg in en underrubrik (\subsection -> spillutrymme)
+		\subsection{Problemsammanfattning}
+
+		\subsection{Orginalspecifikation}
+			Specifikationen i sin helhet finns ...
+
+			% nytt stycke skapas när du har en, eller flera, tomma rader
+			någonstans i föregående stycke
+
+	\section{Åtkomst och användarhandledning}
+		\emph{I detta avsnitt beskrivs de filer, med tillhörande sökvägar,
+			som ingår i lösningen, samt korta beskrivningar om syftet med
+			varje fil. Dessutom beskrivs hur man ska handskas med den
+			implementerade lösningen till problemet, i form av instruktioner
+			för hur körning och kompilering av lösningen sker.}
+	
+		\subsection{Filer som ingår i lösningen}
+			
+			
+		\subsection{Kompilering och körning}
+			
+
+	\section{Systembeskrivning}
+		\emph{I detta avsnitt beskrivs systemet i sin helhet mer i detalj.
+			Datastrukturer och annan intern representation som är central
+			för uppgiftens lösning behandlas. Dessutom beskrivs de olika
+			komponenternas relationer till varandra.}
+
+		%Dessa rubriker behöver inte finnas med, men något i denna stil
+		%bör det kanske vara
+		\subsection{Systemöversikt}
+
+		\subsection{Exekveringsflöde}
+			
+		\subsection{Övriga systemdetaljer}
+
+	\section{Algoritmbeskrivning}
+		\emph{I detta avsnitt beskrivs de algoritmer som anses som
+			icke-triviala i uppgiften.}
+		
+		\subsection{Algoritm 1}
+			
+		\subsection{Algoritm 2}	
+	
+	\section{Lösningens begränsningar}
+		\emph{I detta avsnitt beskrivs alla begränsningar som lösningen av
+			uppgiften innehåller. Detta innefattar även funna begränsningar
+			som strider mot specifikationen.}
+		
+		SKRIV TEXT HÄR...
+
+	\section{Problem och reflektioner}
+		\emph{Här presenteras egna tankar kring uppgiften som sådan samt de
+			problem som uppstått under arbetets gång.}
+		
+		OCH HÄR..
+
+	\section{Testkörningar}
+		\emph{I detta avsnitt visas ett antal tester som utförts med programmet.
+			Samtliga tester är kommenterade.}
+		
+		GLÖM INTE ATT KOMMENTERA TESTER!
+		
+		\begin{footnotesize}
+			\begin{verbatim}
+				Utdata kan lämpligtvis återges så här, men tänk på att
+				        kommentera dina tester. Lägg märke till att rad-
+				brytningarna och mellanslagen bevaras!
+			\end{verbatim}
+		\end{footnotesize}
+		
+
+	% här börjar alla bilagor. Denna måste finnas med även om bara
+	% bilagor anges i \begin{appendices} ... \end{appendices}
+	\appendix
+
+	\section{Bilaga 1}
+	\ldots{}ligger direkt i dokumentet
+
+	% bilagor, t.ex. källkod. En tom extrasida kommer att skrivas ut för
+	% att få alla sidnummer att stämma
+	\begin{appendices}
+		\appitem{Källkod}{0}
+		\appsubitem{\texttt{minfil.c}}{2}
+		\appsubitem{\texttt{minfil.h}}{1}
+		\appitem{En bilaga på 3 sidor}{3}
+	\end{appendices}
+
+\begin{thebibliography}{references}
+\bibitem{Overleaf}\url{https://www.overleaf.com}
+\end{thebibliography}
+
+\end{document}
