@@ -1,5 +1,4 @@
 import Codec.Picture
-import Codec.Picture.Types
 
 main :: IO ()
 main = do
