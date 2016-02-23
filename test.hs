@@ -1,5 +1,5 @@
 import Codec.Picture
-
+import Codec.Picture.Types
 
 
 main :: IO ()
@@ -7,9 +7,24 @@ main = do
     fp <- getLine
     image <- readImage fp
     case image of 
-        Right image' -> print . grey . middlePixel $ image'
+        Right image' -> print $ dynamicMap foo image'
         _            -> print "Error"
 
-middlePixel (ImageRGB8 image@(Image w h _)) = pixelAt image (w `div` 2) (h `div` 2)
 
-grey (PixelRGB8 r g b) = (r + g + b) `div` 3
+
+
+foo :: Pixel a => Image a -> [[Int]]
+foo = 
+	snd . pixelFold 
+		(\(lastY, ps:pss) x y p -> 
+			if y == lastY 
+				then (y, (grey p:ps):pss)
+				else (y, [grey p]:ps:pss)) 
+		(0,[[]])
+
+
+
+grey :: Pixel a => a -> Int
+grey = go . promotePixel
+	where 
+		go (PixelRGB8 r g b) = (fromIntegral $ r + b + g) `div` 3
