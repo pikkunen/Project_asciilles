@@ -27,12 +27,16 @@ asciilate' ([],[],[]) = []
 asciilate' ((a:[]),(d:[]),(g:[])) = []
 asciilate' ((a:b:[]),(d:e:[]),(g:h:[])) = []
 asciilate' ((a:b:c:xs),(d:e:f:ys),(g:h:i:zs))
-    | mean < 5  =  (' ': asciilate' (xs,ys,zs))
-    | mean < 50 =  ('.': asciilate' (xs,ys,zs))
-    | mean < 100 = ('+': asciilate' (xs,ys,zs))
-    | mean < 150 = ('?': asciilate' (xs,ys,zs))
-    | mean < 200 = ('&': asciilate' (xs,ys,zs))
-    | otherwise =  ('#': asciilate' (xs,ys,zs))
+    | mean < 10  = ' ': asciilate' (xs,ys,zs)
+    | mean < 30  = '.': asciilate' (xs,ys,zs)
+    | mean < 45  ='\'': asciilate' (xs,ys,zs)
+    | mean < 60  = '*': asciilate' (xs,ys,zs)
+    | mean < 80  = ':': asciilate' (xs,ys,zs)
+    | mean < 100 = '+': asciilate' (xs,ys,zs)
+    | mean < 130 = '?': asciilate' (xs,ys,zs)
+    | mean < 170 = '&': asciilate' (xs,ys,zs)
+    | mean < 200 = '#': asciilate' (xs,ys,zs)
+    | otherwise  = '@': asciilate' (xs,ys,zs)
     where
 	mean = average [a, b, c, d, e, f, g, h, i]
 
