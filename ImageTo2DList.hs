@@ -3,14 +3,6 @@ module ImageTo2DList (imageTo2DList) where
 import Codec.Picture
 import Codec.Picture.Types
 
-main :: IO ()
-main = do
-    fp <- getLine
-    image <- readImage fp
-    case image of
-        Right image' -> print . pixelMatrix . toImage8 $ image'
-        _            -> print "Error"
-
 average :: Integral a => [a] -> a
 average ls = foldl (+) 0 ls `div` fromIntegral (length ls)
 
