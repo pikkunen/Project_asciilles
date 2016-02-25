@@ -15,6 +15,7 @@ asciilate (xs:ys:[]) = []
 asciilate ((xs):(ys):(zs):ls) = asciilate' (xs, ys, zs) : asciilate ls
 
 
+
 {- asciilate' row
    PURPOSE:  auxillary function for asciilate
    PRE:      all values should be between 0 and 255, all listns in row should be of equal length
@@ -22,23 +23,17 @@ asciilate ((xs):(ys):(zs):ls) = asciilate' (xs, ys, zs) : asciilate ls
    SIDE EFFECTS: None
    EXAMPLES:
 -}
+
+
 asciilate' :: ([Int],[Int],[Int]) -> String
 asciilate' ([],[],[]) = []
 asciilate' ((a:[]),(d:[]),(g:[])) = []
 asciilate' ((a:b:[]),(d:e:[]),(g:h:[])) = []
-asciilate' ((a:b:c:xs),(d:e:f:ys),(g:h:i:zs))
-    | mean < 10  = ' ': asciilate' (xs,ys,zs)
-    | mean < 30  = '.': asciilate' (xs,ys,zs)
-    | mean < 45  ='\'': asciilate' (xs,ys,zs)
-    | mean < 60  = '*': asciilate' (xs,ys,zs)
-    | mean < 80  = ':': asciilate' (xs,ys,zs)
-    | mean < 100 = '+': asciilate' (xs,ys,zs)
-    | mean < 130 = '?': asciilate' (xs,ys,zs)
-    | mean < 170 = '&': asciilate' (xs,ys,zs)
-    | mean < 200 = '#': asciilate' (xs,ys,zs)
-    | otherwise  = '@': asciilate' (xs,ys,zs)
-    where
-	mean = average [a, b, c, d, e, f, g, h, i]
+asciilate' ((a:b:c:xs),(d:e:f:ys),(g:h:i:zs)) =
+    let mean = fromIntegral $ average [a, b, c, d, e, f, g, h, i];
+        symbolIndex = floor $ (mean / 255) * fromIntegral (length symbols - 1);
+        symbols = "#@OW%$ioc*;:+!^'`-. "
+    in  (symbols !! symbolIndex) : asciilate' (xs,ys,zs)
 
 
 {- average list

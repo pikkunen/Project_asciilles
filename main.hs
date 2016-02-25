@@ -4,6 +4,20 @@ import Codec.Picture
 import ImageTo2DList
 import Asciilate
 
+
+htmlHead :: String
+htmlHead = "<html><head><style>body {font-family: \"DejaVu Sans Mono\", Monospace; font-size: 8px; line-height: 1em; letter-spacing: calc(1em - 1ex)}</style></head><body><pre>"
+
+htmlFoot :: String
+htmlFoot = "</pre></body></html>"
+
+fileExtension :: String -> String
+fileExtension fp =
+  let ext = reverse . takeWhile (/='.') . reverse $ fp
+  in  if ext == fp
+        then ""
+        else ext
+
 main :: IO ()
 main = do
     (fp:rest) <- getArgs
@@ -15,5 +29,11 @@ main = do
           putStrLn ascii
           if null destination
             then return ()
-            else writeFile destination ascii
+          else if fileExtension destination == "html"
+            then do
+              writeFile destination $ htmlHead ++ ascii ++ htmlFoot
+              putStrLn "Successfully wrote to .hmtl file!"
+          else do
+            writeFile destination ascii
+            putStrLn "Successfully wrote to file!"
         _            -> putStrLn "Error"
