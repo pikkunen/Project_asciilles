@@ -1,15 +1,22 @@
 import System.Environment
 import Control.Monad
+
 import Codec.Picture
+
 import ImageTo2DList
 import Asciilate
 
+javaScript :: String
+javaScript = "var frames = [].slice.call(document.getElementsByTagName('pre'));var i = 0;setInterval(function() {  frames.forEach(function(frame) {    frame.style.cssText='';  });  document.getElementById(i).style.cssText = 'display:block;';  i = (i+1)%frames.length},150)"
 
-htmlHead :: String
-htmlHead = "<html><head><style>body {font-family: \"DejaVu Sans Mono\", Monospace; font-size: 8px; line-height: 1em; letter-spacing: calc(1em - 1ex)}</style></head><body><pre>"
+css :: String
+css = "pre {display:none; font-family: \"DejaVu Sans Mono\", Monospace; font-size: 8px; line-height: 1em; letter-spacing: calc(1em - 1ex)}"
 
-htmlFoot :: String
-htmlFoot = "</pre></body></html>"
+htmlify :: [String] -> String
+htmlify ts =
+  "<html><head><style>" ++ css ++ "</style></head><body>" ++
+  unlines (map (\(t, index) -> "<pre id=\"" ++ show index ++ "\">" ++ t ++ "</pre>") (zip ts [0..]))
+  ++ "<script>" ++ javaScript ++ "</script></body>"
 
 fileExtension :: String -> String
 fileExtension fp =
@@ -22,18 +29,20 @@ main :: IO ()
 main = do
     (fp:rest) <- getArgs
     let destination = if null rest then "" else head rest
-    image <- readImage fp
-    case image of
-        Right image' -> do
-          let ascii = unlines . reverse . asciilate . imageTo2DList $ image'
-          putStrLn ascii
+    images <- if fileExtension fp == "gif"
+          then readGifImages fp
+          else fmap (fmap (:[])) $ readImage fp
+    case images of
+        Right images' -> do
+          let asciis = map (unlines . reverse . asciilate . imageTo2DList) images'
           if null destination
-            then return ()
+            then mapM_ putStrLn asciis
           else if fileExtension destination == "html"
             then do
-              writeFile destination $ htmlHead ++ ascii ++ htmlFoot
+              writeFile destination $
+                htmlify asciis
               putStrLn "Successfully wrote to .hmtl file!"
           else do
-            writeFile destination ascii
+            writeFile destination $ unlines asciis
             putStrLn "Successfully wrote to file!"
-        _            -> putStrLn "Error"
+        _            -> putStrLn "Error reading image"
