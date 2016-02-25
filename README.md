@@ -9,4 +9,8 @@
 
 Short project in the course "Program construction and Datastructures"
 
-`runhaskell main.hs dave.jpeg`
+## How to run
+
+runhaskell main.hs *filepath [destination]*
+
+example: `runhaskell main.hs dave.jpeg dave.txt`
