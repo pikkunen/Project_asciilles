@@ -8,11 +8,14 @@ module Asciilate (asciilate, asciilate', average) where
    SIDE EFFECTS: None
    EXAMPLES:
 -}
-asciilate :: [[Int]] -> [[Char]]
-asciilate [] = []
-asciilate (xs: []) = []
-asciilate (xs:ys:[]) = []
-asciilate ((xs):(ys):(zs):ls) = asciilate' (xs, ys, zs) : asciilate ls
+asciilate :: Int -> [[Int]] -> [[Char]]
+asciilate _ [] = []
+asciilate scale ls =
+  let rows = take scale ls
+  in  asciilate' scale rows : asciilate scale (drop scale ls)
+--asciilate (xs: []) = []
+--asciilate (xs:ys:[]) = []
+--asciilate ((xs):(ys):(zs):ls) = asciilate' (xs, ys, zs) : asciilate ls
 
 
 
@@ -25,15 +28,15 @@ asciilate ((xs):(ys):(zs):ls) = asciilate' (xs, ys, zs) : asciilate ls
 -}
 
 
-asciilate' :: ([Int],[Int],[Int]) -> String
-asciilate' ([],[],[]) = []
-asciilate' ((a:[]),(d:[]),(g:[])) = []
-asciilate' ((a:b:[]),(d:e:[]),(g:h:[])) = []
-asciilate' ((a:b:c:xs),(d:e:f:ys),(g:h:i:zs)) =
-    let mean = fromIntegral $ average [a, b, c, d, e, f, g, h, i];
+asciilate' :: Int -> [[Int]] -> String
+asciilate' _ [] = ""
+asciilate' scale lss
+  | length (head lss) >= scale = 
+    let mean = fromIntegral . average $ lss >>= take scale
         symbolIndex = floor $ (mean / 255) * fromIntegral (length symbols - 1);
-        symbols = "#@OW%$ioc*;:+!^'`-. "
-    in  (symbols !! symbolIndex) : asciilate' (xs,ys,zs)
+        symbols = "#@WO%$ioc*;:+!^'`-. "
+    in  (symbols !! symbolIndex) : asciilate' scale (map (drop scale) lss)
+  | otherwise = ""
 
 
 {- average list
