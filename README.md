@@ -11,6 +11,4 @@ Short project in the course "Program construction and Datastructures"
 
 ## How to run
 
-runhaskell main.hs *filepath [destination]*
-
-example: `runhaskell main.hs dave.jpeg dave.txt`
+The `main.hs` file is, as the name suggests the file that will actually run the program. The program takes one to three command-line arguments. The first is the file path to the image that is to be turned into ascii. This argument is mandatory. The other two are the output file and the scale. If no output file is provided, the program will print the result in the terminal. If the output file has the .html extension, some html and css will be added to make it look nicer (namely, line breaks, smaller font-size, monospaced font and better horizontal letter spacing)
