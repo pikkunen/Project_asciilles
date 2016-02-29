@@ -43,7 +43,7 @@
 \newcommand{\teacher}{Carlos \textsc{Penichet}\\
 					  Dave \textsc{Clarke}\\
 					  Tjark \textsc{Weber}}
-\newcommand{\rapportnamn}{Projekt ASCIIlles}
+\newcommand{\rapportnamn}{Project ASCIIlles}
 %\newcommand{\undertitel}{Och en eventuell cool undertitel}
 \newcommand{\kursnamn}{Program Design and Data Structures 20c}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -105,102 +105,124 @@
 
 \pagenumbering{arabic}
 
-\section{Problemspecifikation}
-		% \emph innebär emphasize, d.v.s. betona eller framhåll -> kursiv stil
-		\emph{I detta avsnitt beskrivs laborationen, dels som en sammanfattning
-			över dess syfte, men även en koppling till orginalspecifikationen
-			tas upp.}
+	\section{Project description}
+
+		Project ASCIIlles is a short project in the course Program Design and Data Structures teached at Uppsala University during the fall semester 2015 and the spring semester 2016. The subject of this project is to create a program called ASCIIfy which converts an image to ASCII-art. The side effects are that the team gains experience in working with projects and using modules made by others.
+
+		%\emph{I detta avsnitt beskrivs laborationen, dels som en sammanfattning över dess syfte, men även en koppling till orginalspecifikationen			tas upp.}
 
 		% lägg in en underrubrik (\subsection -> spillutrymme)
-		\subsection{Problemsammanfattning}
+		\subsection{Program description }
 
-		\subsection{Orginalspecifikation}
-			Specifikationen i sin helhet finns ...
+		ACSIIfy scans an image and splits it into smaller segments. The average greyscale value of every segment is calculated and represented as an ASCII-character in the exported into the terminal or as a HTML-file.
 
-			% nytt stycke skapas när du har en, eller flera, tomma rader
-			någonstans i föregående stycke
+		%\subsection{Orginalspecifikation}
+			%Specifikationen i sin helhet finns ... nytt stycke skapas när du har en, eller flera, tomma rader någonstans i föregående stycke
 
-	\section{Åtkomst och användarhandledning}
-		\emph{I detta avsnitt beskrivs de filer, med tillhörande sökvägar,
-			som ingår i lösningen, samt korta beskrivningar om syftet med
-			varje fil. Dessutom beskrivs hur man ska handskas med den
-			implementerade lösningen till problemet, i form av instruktioner
-			för hur körning och kompilering av lösningen sker.}
+	\section{User manual}
+
+	The main.hs file is, as the name suggests the file that will actually run the program. The program takes one to three command-line arguments. The first is the file path to the image that is to be turned into ascii. This argument is mandatory. The other two are the output file and the scale. If no output file is provided, the program will print the result in the terminal. If the output file has the .html extension, some html and css will be added to make it look nicer (namely, line breaks, smaller font-size, monospaced font and better horizontal letter spacing). Scale should be given as a natural number, the bigger the number the smaller the returned ASCII will be. If no scale is given a standard scale will be used.
+		
+		
+
+		%\emph{I detta avsnitt beskrivs de filer, med tillhörande sökvägar,som ingår i lösningen, samt korta beskrivningar om syftet med	varje fil. Dessutom beskrivs hur man ska handskas med den implementerade lösningen till problemet, i form av instruktioner för hur körning och kompilering av lösningen sker.}
 	
-		\subsection{Filer som ingår i lösningen}
-			
-			
-		\subsection{Kompilering och körning}
-			
+		\subsection{Files included in the program }
+		
+		main.hs | Contains the main function and the functions responsible for loading and writing files.
 
-	\section{Systembeskrivning}
-		\emph{I detta avsnitt beskrivs systemet i sin helhet mer i detalj.
-			Datastrukturer och annan intern representation som är central
-			för uppgiftens lösning behandlas. Dessutom beskrivs de olika
-			komponenternas relationer till varandra.}
+		imageTo2dlist.hs | Contains the functions to convert an image into a list that represents the pixels of the image.
+
+		asciilate.hs | Contains the functions to convert a list of pixels into ascii-art.
+			
+		\subsection{How to run}
+
+		To run, run the following line in the terminal
+		\begin{footnotesize}
+			\begin{verbatim}
+				runhaskell main.hs filepath [destination] [scale]
+			\end{verbatim}
+		\end{footnotesize} 
+		
+		Example: To run the file dave.jpeg and export it as a HTML-file with the greatest possible resolution one should run the following in the terminal:
+		
+		\begin{footnotesize}
+			\begin{verbatim}
+				runhaskell main.hs dave.jpeg dave.html 1
+			\end{verbatim}
+		\end{footnotesize} 
+
+	\section{Program documentation}
+
+		
+
+		%\emph{I detta avsnitt beskrivs systemet i sin helhet mer i detalj. Datastrukturer och annan intern representation som är central för uppgiftens lösning behandlas. Dessutom beskrivs de olika komponenternas relationer till varandra.}
 
 		%Dessa rubriker behöver inte finnas med, men något i denna stil
 		%bör det kanske vara
-		\subsection{Systemöversikt}
+		%\subsection{Systemöversikt}
 
-		\subsection{Exekveringsflöde}
+		%\subsection{Exekveringsflöde}
 			
-		\subsection{Övriga systemdetaljer}
+		%\subsection{Övriga systemdetaljer}
 
-	\section{Algoritmbeskrivning}
-		\emph{I detta avsnitt beskrivs de algoritmer som anses som
-			icke-triviala i uppgiften.}
+	\section{Algoritm description}
+		%\emph{I detta avsnitt beskrivs de algoritmer som anses som icke-triviala i uppgiften.}
 		
 		\subsection{Algoritm 1}
 			
 		\subsection{Algoritm 2}	
 	
-	\section{Lösningens begränsningar}
-		\emph{I detta avsnitt beskrivs alla begränsningar som lösningen av
-			uppgiften innehåller. Detta innefattar även funna begränsningar
-			som strider mot specifikationen.}
-		
-		SKRIV TEXT HÄR...
+	\section{The solutions limitations}
+	
+	ASCIIfy is designed to support all types of images that the Haskell library JuicyPixels (used for loading and storing images) supports, which are PNG-files, JPEG-files and GIF-files. The program is not equipped to handle files in the CMYK colorspace. 
 
-	\section{Problem och reflektioner}
-		\emph{Här presenteras egna tankar kring uppgiften som sådan samt de
-			problem som uppstått under arbetets gång.}
-		
-		OCH HÄR..
+	The support of GIF-files is somewhat limited, the framerate for animated GIFs is constant och can thus appear awkward. 
 
-	\section{Testkörningar}
-		\emph{I detta avsnitt visas ett antal tester som utförts med programmet.
-			Samtliga tester är kommenterade.}
+		%\emph{I detta avsnitt beskrivs alla begränsningar som lösningen av
+		%	uppgiften innehåller. Detta innefattar även funna begränsningar
+		%	som strider mot specifikationen.}
 		
-		GLÖM INTE ATT KOMMENTERA TESTER!
+		%SKRIV TEXT HÄR...
+
+	\section{Problems and reflections}
 		
-		\begin{footnotesize}
-			\begin{verbatim}
-				Utdata kan lämpligtvis återges så här, men tänk på att
-				        kommentera dina tester. Lägg märke till att rad-
-				brytningarna och mellanslagen bevaras!
-			\end{verbatim}
-		\end{footnotesize}
+		The greatest challenge durning this project was not the programming itself, but to understand and to use JuicyPixels.
+
+		%\emph{Här presenteras egna tankar kring uppgiften som sådan samt de problem som uppstått under arbetets gång.}
+		
+
+	\section{Test cases}
+		%\emph{I detta avsnitt visas ett antal tester som utförts med programmet.Samtliga tester är kommenterade.}
+		
+		%GLÖM INTE ATT KOMMENTERA TESTER!
+		
+		%\begin{footnotesize}
+			%\begin{verbatim}
+				%Utdata kan lämpligtvis återges så här, men tänk på att kommentera dina tester. Lägg märke till att rad-
+				%brytningarna och mellanslagen bevaras!
+			%\end{verbatim}
+		%\end{footnotesize}
 		
 
 	% här börjar alla bilagor. Denna måste finnas med även om bara
 	% bilagor anges i \begin{appendices} ... \end{appendices}
 	\appendix
 
-	\section{Bilaga 1}
-	\ldots{}ligger direkt i dokumentet
+	\section{Appendixes}
+	%\ldots{}ligger direkt i dokumentet
 
 	% bilagor, t.ex. källkod. En tom extrasida kommer att skrivas ut för
 	% att få alla sidnummer att stämma
 	\begin{appendices}
-		\appitem{Källkod}{0}
+		\appitem{Some code}{0}
 		\appsubitem{\texttt{minfil.c}}{2}
 		\appsubitem{\texttt{minfil.h}}{1}
 		\appitem{En bilaga på 3 sidor}{3}
 	\end{appendices}
 
 \begin{thebibliography}{references}
-\bibitem{Overleaf}\url{https://www.overleaf.com}
+\bibitem{JuicyPixels}\url{http://hackage.haskell.org/package/JuicyPixels}
 \end{thebibliography}
 
 \end{document}
