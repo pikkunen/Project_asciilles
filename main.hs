@@ -3,6 +3,7 @@ import System.Environment
 import Control.Monad
 import Data.Maybe
 
+-- Codec.Picture comes from the JuicyPixels library (https://hackage.haskell.org/package/JuicyPixels-3.2.7)
 import Codec.Picture
 import Codec.Picture.Metadata
 
@@ -17,7 +18,7 @@ htmlify ts =
   unlines (map (\(t, index) -> "<pre id=\"" ++ show index ++ "\">" ++ t ++ "</pre>") (zip ts [0..]))
   ++ "<script>" ++ javaScript ++ "</script></body>"
   where
-    javaScript = "var frames = [].slice.call(document.getElementsByTagName('pre'));var i = 0;setInterval(function() {frames.forEach(function(frame) {frame.style.cssText='';});document.getElementById(i).style.cssText = 'display:block;';i = (i+1)%frames.length},150)"
+    javaScript = "var frames=[].slice.call(document.getElementsByTagName('pre'));var i=0;setInterval(function(){frames.forEach(function(frame){frame.style.cssText='';});document.getElementById(i).style.cssText='display:block;';i=(i+1)%frames.length},150)"
     css = "pre {display:none; font-family: \"DejaVu Sans Mono\", Monospace; font-size: 8px; line-height: 1em; letter-spacing: calc(1em - 1ex)}"
 
 
@@ -39,27 +40,27 @@ main = do
 
   images <- if fileExtension fp == "gif"
         then readGifImages fp
-        else fmap (fmap (:[])) $ readImage fp
+        else fmap (fmap (:[])) $ readImage fp -- fmap (fmap (:[])) wraps the image to a list so that the types are consistent
 
   either
     putStrLn
     (\images' -> do
       let asciis = map (unlines . asciilate scale' . imageTo2DList) images'
       maybe
-        (mapM_ putStrLn asciis)
+        (mapM_ putStrLn asciis) -- if no destination, just print everything in the terminal
         (\destination' ->
-          if fileExtension destination' == "html"
+          if fileExtension destination' == "html" -- if the file extension is html, add html, css etc.
             then do
               writeFile destination' $ htmlify asciis
               putStrLn "Successfully wrote to .hmtl file!"
-            else do
+            else do -- if destination, but not html as file extension, just put everything in the destination file without anything extra
               writeFile destination' $ unlines asciis
               putStrLn "Successfully wrote to file!")
          destination)
       images
 
   where
-    -- find arguments looks through the command line arguments and finds the destination and scale ()
+    -- findArguments looks through the command line arguments and finds the destination and scale.
     findArguments :: [String] -> (Maybe String, Maybe Int)
     findArguments = foldl
       (\(oldDest, oldScale) arg ->

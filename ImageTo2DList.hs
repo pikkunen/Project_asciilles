@@ -1,14 +1,15 @@
 module ImageTo2DList (imageTo2DList) where
 
+-- Codec.Picture comes from the JuicyPixels library (https://hackage.haskell.org/package/JuicyPixels-3.2.7)
 import Codec.Picture
 import Codec.Picture.Types
+
+import Utils
 
 import qualified GHC.Word as W
 
 import Test.QuickCheck hiding (NonEmptyList)
-
-average :: Integral a => [a] -> a
-average ls = foldl (+) 0 ls `div` fromIntegral (length ls)
+import Test.HUnit
 
 {- functionIdentifier y a size
    PURPOSE:  If a pixel has a transperency component, simply throwing it away can be missleading,
@@ -30,7 +31,8 @@ fillTransparency y a size =
   in  round $ (y' * a' + size' * (size'-a')) / size'
 
 -- converts a DynamicImage to another DynamicImage with the same resolution, but in greyscale and without transperency
--- does not support CMYK8 or CMYK16, but all other juicypixel color formats
+-- (fillTransparency is used on images with a pixel component) does not support CMYK8 or CMYK16, but all other
+-- juicypixel color formats
 toGrey :: DynamicImage -> DynamicImage
 toGrey img = case img of
   ImageY8  img' -> ImageY8  img'
@@ -60,7 +62,7 @@ toImage8 img = case toGrey img of
   ImageYF  img' -> pixelMap (round . (*255)) img'
 
 -- like imageTo2DList, but works only on ImageY8
-pixelMatrix ::  Image Pixel8 -> [[Int]]
+pixelMatrix :: Image Pixel8 -> [[Int]]
 pixelMatrix =
 	map reverse . reverse .  snd . pixelFold -- because of the direction pixelFold works in, and the direction
 		(\(lastY, ps:pss) x y p ->             -- you add things to lists, reverse and map reverse are necessary
@@ -80,31 +82,29 @@ imageTo2DList = pixelMatrix . toImage8
 
 -- the following is used only for testing
 
--- the newtypes exist so that we can create different Arbitrary instances for them
-newtype List2D a = List2D [[a]] deriving (Show)
-newtype NonEmptyList a = NonEmptyList [a] deriving (Show)
+-- the inverse of imageTo2DList
+list2DtoImage lss =
+   let w = length $ head lss
+       h = length lss
+   in  ImageY8 $ generateImage (\x y -> lss !! y !! x) w h
 
-fromNonEmptyList :: NonEmptyList a -> [a]
-fromNonEmptyList (NonEmptyList a) = a
-
-instance Arbitrary a => Arbitrary (NonEmptyList a) where
-  arbitrary = do
-    as <- arbitrary
-    a <- arbitrary
-    return . NonEmptyList $ a:as
-
-instance Arbitrary a => Arbitrary (List2D a) where
-  arbitrary = do
-    a <- arbitrary
-    let a' = map (fromNonEmptyList) (fromNonEmptyList a)
-    let shortestLength = minimum $ map length a'
-    return . List2D $ map (take shortestLength) a'
-
-runtests =
+quickChecks =
   sequence_
-    [quickCheck ((\y a -> fillTransparency y a 255 <= 255) :: W.Word8 -> W.Word8 -> Bool)
-    ,quickCheck (\(List2D lss) ->
-       let w = length $ head lss
-           h = length lss
-       in  map (map fromIntegral) lss == (imageTo2DList . ImageY8 $ generateImage (\x y -> lss !! y !! x) w h))
+    [quickCheck ((\y a -> let y' = fillTransparency y a 255 in y' <= 255 && y' >= 0) :: W.Word8 -> W.Word8 -> Bool)
+      -- the resulting grey value should be between 0 and 255
+    ,quickCheck (\lss ->
+       map (map fromIntegral) (fromList2D lss) == (imageTo2DList . list2DtoImage. fromList2D) lss)
+      -- turning a 2dlist into an image and back again should result in the original list
     ]
+
+hUnitTests =
+  runTestTT . TestList $
+    [TestCase $ assertEqual ("mixing black with white in (almost equal) parts") 128 (fillTransparency 0 127 255)
+    ,TestCase $ assertEqual ("completely transparent -> white") 255 (fillTransparency 0 0 255)
+    ]
+
+runtests = do
+  putStrLn "HUnit:"
+  hUnitTests
+  putStrLn "QuickCheck:"
+  quickChecks
