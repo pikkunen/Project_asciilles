@@ -1,4 +1,4 @@
-module Asciilate (asciilate, average) where
+module Asciilate (asciilate, average, runtests) where
 
 import Utils
 import Test.QuickCheck
@@ -23,8 +23,8 @@ asciilate scale lss =
         else []
 
 
--- Auxilary function for asciilate which maps a group of rows to a row of characters
 
+-- Auxilary function for asciilate which maps a group of rows to a row of characters
 asciilate' :: Int -> [[Int]] -> [Char]
 asciilate' _ [] = ""
 asciilate' scale lss
@@ -37,7 +37,7 @@ symbols = "#W@O%$ioc*;:+!^'`-. "
 
 -- given a grey value (0 - 255) finds the apropriate symbol where darker greys have symbols with more "ink"
 calculateSymbol :: Int -> Char
-calculateSymbol grey = symbols !! (floor $ (fromIntegral grey / 255) * fromIntegral (length symbols - 1))
+calculateSymbol grey = symbols !! min (length symbols - 1) (grey * length symbols `div` 255) -- the min is necessary to make it not crash on 255
 
 
 -- the following is for tests
@@ -46,7 +46,7 @@ calculateSymbol grey = symbols !! (floor $ (fromIntegral grey / 255) * fromInteg
 -- This function will return the smallest grey value that matches that symbol instead.
 reverseSymbol :: Char -> Int
 reverseSymbol symbol
-  | symbol `elem` symbols = (*255) . fromJust . (`elemIndex` symbols) $ symbol
+  | symbol `elem` symbols = (`div` (length symbols - 1)) . (*255) . fromJust . (`elemIndex` symbols) $ symbol
   | otherwise             = error $ "symbol must be in symbols. Was: " ++ show symbol
 
 newtype Symbol = Symbol Char deriving Show
