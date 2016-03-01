@@ -53,7 +53,7 @@
 \begin{titlepage}
 	\begin{center}
 
-	\includegraphics{uu_logo.png} \\[1.5cm]
+	\includegraphics[scale=0.35]{uu_ascii.png} \\[1.5cm]
 	\Large{\kursnamn}\\ 
 	\HRule \\[0.5cm]
 	\textsc{\huge{\rapportnamn}}\\
@@ -114,7 +114,7 @@
 		% lägg in en underrubrik (\subsection -> spillutrymme)
 		\subsection{Program description }
 
-		ACSIIfy scans an image and splits it into smaller segments. The average greyscale value of every segment is calculated and represented as an ASCII-character in the exported into the terminal or as a HTML-file.
+		ACSIIfy scans an image and splits it into smaller segments. The average greyscale value of every segment is calculated and represented as an ASCII-character in the exported into the terminal or as a HTML-file. This program relies on the use of JuicyPixels.
 
 		%\subsection{Orginalspecifikation}
 			%Specifikationen i sin helhet finns ... nytt stycke skapas när du har en, eller flera, tomma rader någonstans i föregående stycke
@@ -122,6 +122,8 @@
 	\section{User manual}
 
 	The main.hs file is, as the name suggests the file that will actually run the program. The program takes one to three command-line arguments. The first is the file path to the image that is to be turned into ascii. This argument is mandatory. The other two are the output file and the scale. If no output file is provided, the program will print the result in the terminal. If the output file has the .html extension, some html and css will be added to make it look nicer (namely, line breaks, smaller font-size, monospaced font and better horizontal letter spacing). Scale should be given as a natural number, the bigger the number the smaller the returned ASCII will be. If no scale is given a standard scale will be used.
+
+	To run this program you need the Haskell module JuicyPixels, which can be installed with cabal or downloaded from \url{http://hackage.haskell.org/package/JuicyPixels}. 
 		
 		
 
@@ -154,7 +156,13 @@
 
 	\section{Program documentation}
 
-		When the program starts, the firsts thing it does is reads the image/gif from the specified filepath. It does this by calling the functions readImage, readGifImages, these funtions are provided by juicypixels. It will then go ahead and convert the image/images to grayscale. Now that ever pixel is a value between 0 and 255 the program can easily determine what symbol is to be replaced with the pixels. It doesn't necessarily do this with every pixel, it takes a chunk of pixels and gets the average value of that. The chunk size is determend by the scale argument, for instance if you specified a scale of 2 the program would take a chunk containing 2x2 pixels. Chunks with lower values are darker so it should be replaced with a symbol conaining alot of black. Now the program basically creates a string of all the symbols and writes it to the specified file, if the user hasen't specified a location to write the file to it will print the ascii art in the terminal.
+	When the program starts, the firsts thing it does is to read the image or gif from the specified filepath. It does this by calling the functions readImage or readGifImages, which are funtions provided by the Haskell library JuicyPixels. 
+
+	Then the program converts colored image/images to grayscale. Giving every pixel has a value between 0 and 255, where 0 is black and 255 is white and the numbers between are different shades of grey.
+
+	The program determines what symbol is to replace the pixels with by calculating the average greyscale value of a chunk of pixels.The chunk size is determined by the scale argument, for instance if you specified a scale of 2 the program would take a chunk containing 2x2 pixels. Chunks with lower values are darker so it should be replaced with a symbol containing alot of black. 
+
+	This function is recursively applied to rows of pixels from the image and returns a string for evey row.  These rows are combined together and written into the specified file, if the user hasen't specified a location to write the file then the program will print the ASCII-art straight into the terminal.
 
 		%\emph{I detta avsnitt beskrivs systemet i sin helhet mer i detalj. Datastrukturer och annan intern representation som är central för uppgiftens lösning behandlas. Dessutom beskrivs de olika komponenternas relationer till varandra.}
 
@@ -179,6 +187,8 @@
 
 	The support of GIF-files is somewhat limited, the framerate for animated GIFs is constant och can thus appear awkward. 
 
+	ASCIIfy is also a bit slow, so high resolution images are slow to run.
+
 		%\emph{I detta avsnitt beskrivs alla begränsningar som lösningen av
 		%	uppgiften innehåller. Detta innefattar även funna begränsningar
 		%	som strider mot specifikationen.}
@@ -187,7 +197,7 @@
 
 	\section{Problems and reflections}
 		
-		The greatest challenge durning this project was not the programming itself, but to understand and to use JuicyPixels.
+		The greatest challenge durning this project was not the programming itself, but to understand and to use JuicyPixels. 
 
 		%\emph{Här presenteras egna tankar kring uppgiften som sådan samt de problem som uppstått under arbetets gång.}
 		
