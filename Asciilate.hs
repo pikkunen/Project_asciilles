@@ -51,11 +51,11 @@ reverseSymbol symbol
 
 newtype Symbol = Symbol Char deriving Show
 
-
-fromSymbol :: Symbol -> Char
-fromSymbol (Symbol s) = s
+getSymbol :: Symbol -> Char
+getSymbol (Symbol s) = s
 
 instance Arbitrary Symbol where
   arbitrary = elements $ map Symbol symbols
 
-runtests = quickCheck (\lss -> map (map fromSymbol) lss == (asciilate 1 . map (map (reverseSymbol . fromSymbol)) $ lss) )
+runtests = quickCheck (\lss -> map (map getSymbol) lss == (asciilate 1 . map (map (reverseSymbol . getSymbol)) $ lss) )
+  -- a 2DList of symbols with reverseSymbol called on them that gets asciilated should result in the original symbol

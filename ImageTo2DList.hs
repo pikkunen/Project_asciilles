@@ -93,7 +93,7 @@ quickChecks =
     [quickCheck ((\y a -> let y' = fillTransparency y a 255 in y' <= 255 && y' >= 0) :: W.Word8 -> W.Word8 -> Bool)
       -- the resulting grey value should be between 0 and 255
     ,quickCheck (\lss ->
-       map (map fromIntegral) (fromList2D lss) == (imageTo2DList . list2DtoImage. fromList2D) lss)
+       map (map fromIntegral) (getList2D lss) == (imageTo2DList . list2DtoImage. getList2D) lss)
       -- turning a 2dlist into an image and back again should result in the original list
     ]
 
