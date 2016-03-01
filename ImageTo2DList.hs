@@ -1,4 +1,4 @@
-module ImageTo2DList (imageTo2DList) where
+module ImageTo2DList (imageTo2DList, runtests) where
 
 -- Codec.Picture comes from the JuicyPixels library (https://hackage.haskell.org/package/JuicyPixels-3.2.7)
 import Codec.Picture

@@ -68,3 +68,14 @@ main = do
           then (oldDest , Just $ read arg)
           else (Just arg, oldScale       ))
       (Nothing, Nothing)
+
+runtests = do
+  putStrLn "ImageTo2DList:"
+  putStrLn ""
+  ImageTo2DList.runtests
+  putStrLn ""
+  putStrLn "----------"
+  putStrLn ""
+  putStrLn "Asciilate:"
+  putStrLn ""
+  Asciilate.runtests

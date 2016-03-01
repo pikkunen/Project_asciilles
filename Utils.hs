@@ -9,6 +9,7 @@ average ls = foldl (+) 0 ls `div` fromIntegral (length ls)
 -- the newtypes exist so that we can create different Arbitrary instances for them
 newtype List2D a = List2D [[a]] deriving (Show)
 
+-- getX is a naming convention for extracting things wraped in newtypes
 getList2D :: List2D a -> [[a]]
 getList2D (List2D a) = a
 
