@@ -1,0 +1,13 @@
+\contentsline {section}{\numberline {1}Project introduction}{1}
+\contentsline {subsection}{\numberline {1.1}Program description }{1}
+\contentsline {section}{\numberline {2}User manual}{1}
+\contentsline {subsection}{\numberline {2.1}Files included in the program }{1}
+\contentsline {subsection}{\numberline {2.2}How to run}{1}
+\contentsline {section}{\numberline {3}Program documentation}{2}
+\contentsline {section}{\numberline {4}Algoritm description}{2}
+\contentsline {subsection}{\numberline {4.1}ImageTo2dList}{2}
+\contentsline {subsection}{\numberline {4.2}Asciilate}{2}
+\contentsline {section}{\numberline {5}The solutions limitations}{3}
+\contentsline {section}{\numberline {6}Problems and reflections}{3}
+\contentsline {section}{\numberline {7}Test cases}{3}
+\contentsline {section}{\numberline {8}Examples}{4}
