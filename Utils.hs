@@ -19,3 +19,6 @@ instance Arbitrary a => Arbitrary (List2D a) where
     let a' = map (getNonEmpty) (getNonEmpty a)
     let shortestLength = minimum $ map length a'
     return . List2D $ map (take shortestLength) a'
+
+instance Functor List2D where
+  fmap f = List2D . map (map f) . getList2D

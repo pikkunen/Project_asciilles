@@ -30,9 +30,12 @@ fillTransparency y a size =
       size' = fromIntegral size
   in  round $ (y' * a' + size' * (size'-a')) / size'
 
--- converts a DynamicImage to another DynamicImage with the same resolution, but in greyscale and without transperency
--- (fillTransparency is used on images with a pixel component) does not support CMYK8 or CMYK16, but all other
--- juicypixel color formats
+{- converts a DynamicImage to another DynamicImage with the same resolution, but in greyscale and without transperency
+ - (fillTransparency is used on images with a pixel component) does not support CMYK8 or CMYK16, but all other
+ - juicypixel color formats are supported.
+ - Almost every case consists of some apropriate constructor, averaging the r g and b in the case of rgb and/or
+ - fillTransparency in the case of a alpha chanel
+ -}
 toGrey :: DynamicImage -> DynamicImage
 toGrey img = case img of
   ImageY8  img' -> ImageY8  img'
@@ -99,7 +102,7 @@ quickChecks =
 
 hUnitTests =
   runTestTT . TestList $
-    [TestCase $ assertEqual ("mixing black with white in (almost equal) parts") 128 (fillTransparency 0 127 255)
+    [TestCase $ assertEqual ("mixing black with white in (almost) equal parts") 128 (fillTransparency 0 127 255)
     ,TestCase $ assertEqual ("completely transparent -> white") 255 (fillTransparency 0 0 255)
     ]
 
